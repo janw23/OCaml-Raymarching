@@ -2,8 +2,11 @@ cd src
 ocamlfind ocamlopt -linkpkg \
 	-package graphics \
 	vector3.ml \
+	vector2 \
 	transform.ml \
-	gameobject.ml \
+	worldobject.ml \
+	camera.ml \
+	scene.ml \
 	eval.ml \
 	-o ../build/eval
 

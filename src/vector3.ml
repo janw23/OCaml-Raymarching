@@ -25,5 +25,12 @@ let ( // ) (v : vector3) (s : float) =
 	if s = 0.0 then raise ZeroDivision else
 	{ x = v.x /. s ; y = v.y /. s ; z = v.z /. s }
 
+(* Vector-vector componentwise multiplication *)
+let ( *** ) (a : vector3) (b : vector3) =
+	{ x = a.x *. b.x ; y = a.y *. b.y ; z = a.z *. b.z }
+
 let string_of_vector3 (v : vector3) = 
 	"(" ^ (string_of_float v.x) ^ "; " ^ (string_of_float v.y) ^ "; " ^ (string_of_float v.z) ^ ")"
+
+let vector3_zero = { x = 0.; y = 0.; z = 0. }
+let vector3_one 	= { x = 1.; y = 1.; z = 1. } 
