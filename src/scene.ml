@@ -1,5 +1,7 @@
 open Vector3
 open Worldobject
+open Camera
+open Distancerules
 
 (* Scene contains information about all present objects *)
 (* It is the definition of a particular virtaul world *)
@@ -9,6 +11,12 @@ type scene =
 	lightSources : lightsource list;
 	mainCamera 	 : camera;
 }
+
+let make_scene (cam : camera) = 
+	{ worldObjects = []; lightSources = []; mainCamera = cam }
+
+let scene_add_worldobject (scn : scene) (w : worldobject) =
+	{ worldObjects = w :: scn.worldObjects; lightSources = scn.lightSources; mainCamera = scn.mainCamera }
 
 (* Returns the maximum safe distance that ray can travel from position [pos] *)
 (* and the 'closest' object constraining that distance 						 *)
@@ -30,9 +38,18 @@ let castRay (scn : scene) (orig : vector3) (dir : vector3)
 			(rule : float -> float -> float)
 			(steps : int) (eps : float) =
 	let rec travel pos info step =
-		if step = 0 then (function (p, o) -> (p, o, false)) else begin
+		if step = 0 then (info, false) else begin
 			let (dist, obj) = getRayStepDistanceObject scn pos rule in
-			if dist <= eps then (function (p, o) -> (p, o, true))
+			if dist <= eps then (info, true)
 			else travel (pos ++ (dir ** dist)) (pos, obj) (step - 1)
 		end
 	in travel orig (orig, null_worldobject) steps
+
+(* Returns the color (r, g, b) of a pixel [px, py] cast from mainCamera in scene [scn] *)
+let calculatePixel (scn : scene) (px : int) (py : int) =
+	(* TODO: add camera rotation *)
+	let ((hitpoint, obj), hitoccured) =
+		castRay scn !(scn.mainCamera.trans.position) (get_pixel_direction scn.mainCamera px py) min 100 0.001
+	in
+		if not hitoccured then (0, 0, 0)
+		else vector3_to_rgb (obj.color hitpoint) 

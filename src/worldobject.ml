@@ -15,8 +15,6 @@ type lightsource =
 	trans : transform;
 }
 
-
-
 (* Creates new worldobject with given parameters *)
 let make_worldobject _name _dist _color =
 	{ name = _name; trans = transform_default (); dist = _dist; color = _color }

@@ -28,6 +28,8 @@ let ( // ) (v : vector2) (s : float) =
 let ( *** ) (a : vector2) (b : vector2) =
 	{ x = a.x *. b.x ; y = a.y *. b.y }
 
+let vector2_make a b = { x = a ; y = b }
+
 let string_of_vector2 (v : vector2) = 
 	"(" ^ (string_of_float v.x) ^ "; " ^ (string_of_float v.y) ^ ")"
 
